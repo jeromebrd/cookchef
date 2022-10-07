@@ -28,6 +28,9 @@
 .m-20 {
   margin: 20px;
 }
+.mb-10 {
+  margin-bottom: 10px;
+}
 .mb-20 {
   margin-bottom: 20px;
 }
@@ -40,4 +43,12 @@
   max-width: 1200px;
   margin: auto;
   width: 100%;
+}
+
+.calc {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: red;
 }
