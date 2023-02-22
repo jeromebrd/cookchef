@@ -2,8 +2,9 @@ import styles from '../Homepage/Homepage.module.scss';
 import Recipe from './components/Recipe/Recipe';
 import { data } from '../../data/recipes';
 import { useState } from 'react';
+import Loading from './components/Loading/Loading';
 
-function Content() {
+function Homepage() {
   const recipes = data;
 
   //pour la barre de recherche
@@ -13,10 +14,15 @@ function Content() {
     setFilter(filter.trim().toLowerCase());
   }
 
+  // pour le chargement des recipes
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
-    <div className="container flex-fill p-20">
+    <div className="flex-fill container d-flex flex-column p-20">
       <h1 className="my-30">Découvrez nos nouvelles recettes</h1>
-      <div className={`card p-20 ${styles.contentCard}`}>
+      <div
+        className={`card flex-fill d-flex flex-column p-20 mb-20 ${styles.contentCard}`}
+      >
         <div
           className={` d-flex justify-content-center align-items-center my-30 ${styles.searchBar}`}
         >
@@ -28,16 +34,20 @@ function Content() {
             placeholder="Rechercher"
           />
         </div>
-        <div className={`${styles.grid} justify-content-center br`}>
-          {recipes
-            .filter((r) => r.title.toLocaleLowerCase().startsWith(filter))
-            .map((r) => (
-              <Recipe key={r.id} title={r.title} image={r.image} />
-            ))}
-        </div>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className={`${styles.grid} justify-content-center br`}>
+            {recipes
+              .filter((r) => r.title.toLocaleLowerCase().startsWith(filter))
+              .map((r) => (
+                <Recipe key={r.id} title={r.title} image={r.image} />
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default Content;
+export default Homepage;
