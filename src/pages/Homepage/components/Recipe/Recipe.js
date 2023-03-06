@@ -1,8 +1,12 @@
 import styles from './Recipe.module.scss';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ApiContext } from '../../../../context/ApiContext';
 
-function Recipe({ recipe: { title, image, liked, _id }, toggleLikedRecipe }) {
+function Recipe({
+  recipe: { title, image, liked, _id },
+  toggleLikedRecipe,
+  deleteRecipe,
+}) {
   const BASE_URL_API = useContext(ApiContext);
 
   async function handleClick() {
@@ -22,8 +26,23 @@ function Recipe({ recipe: { title, image, liked, _id }, toggleLikedRecipe }) {
       console.log('Oops erreur !');
     }
   }
+
+  async function handleClickDelete(e) {
+    e.stopPropagation();
+    try {
+      const response = await fetch(`${BASE_URL_API}/${_id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        deleteRecipe(_id);
+      }
+    } catch (e) {
+      console.log('Error method delete');
+    }
+  }
   return (
     <div onClick={handleClick} className={styles.recipe}>
+      <i onClick={handleClickDelete} className="fa-solid fa-xmark"></i>
       <div className={styles.imageContainer}>
         <img src={image} alt={title} />
       </div>
